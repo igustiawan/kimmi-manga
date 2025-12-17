@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
+import { fetchChapterImages } from "../services/mangapi";
 
-export default function MangaReader() {
-  const [pages, setPages] = useState<string[]>([]);
+type Props = {
+  chapterEndpoint: string;
+  onBack: () => void;
+};
+
+export default function MangaReader({ chapterEndpoint, onBack }: Props) {
+  const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // contoh chapter static (bisa diganti dynamic nanti)
-    fetch("https://api.mangadex.org/chapter?limit=1&translatedLanguage[]=en")
-      .then((r) => r.json())
-      .then((j) => {
-        const ch = j.data[0];
-        const base = `https://uploads.mangadex.org/data/${ch.attributes.hash}`;
-        const imgs = ch.attributes.data.map(
-          (p: string) => `${base}/${p}`
-        );
-        setPages(imgs);
-      })
+    setLoading(true);
+    fetchChapterImages(chapterEndpoint)
+      .then(setImages)
       .finally(() => setLoading(false));
-  }, []);
+  }, [chapterEndpoint]);
 
   if (loading) {
     return <div className="panel">Loading chapter…</div>;
@@ -25,14 +23,28 @@ export default function MangaReader() {
 
   return (
     <div>
-      {pages.map((src, i) => (
+      {/* HEADER */}
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 2,
+          background: "#fff",
+          padding: "8px 10px",
+          borderBottom: "1px solid #eee"
+        }}
+      >
+        <button onClick={onBack}>← Back</button>
+      </div>
+
+      {/* PAGES */}
+      {images.map((src, i) => (
         <img
           key={i}
           src={src}
           style={{
             width: "100%",
-            marginBottom: 12,
-            borderRadius: 8
+            display: "block"
           }}
         />
       ))}

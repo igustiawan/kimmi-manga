@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { fetchMangaList } from "../services/mangapi";
 import type { MangaItem } from "../services/mangapi";
 
-export default function LibraryPanel() {
+type Props = {
+  onSelect: (endpoint: string) => void;
+};
+
+export default function LibraryPanel({ onSelect }: Props) {
   const [manga, setManga] = useState<MangaItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +29,12 @@ export default function LibraryPanel() {
       }}
     >
       {manga.map((m) => (
-        <div key={m.id} className="panel">
+        <div
+          key={m.id}
+          className="panel"
+          onClick={() => onSelect(m.id)}
+          style={{ cursor: "pointer" }}
+        >
           <img
             src={m.cover}
             alt={m.title}
@@ -34,11 +43,18 @@ export default function LibraryPanel() {
               width: "100%",
               aspectRatio: "3 / 4",
               objectFit: "cover",
-              borderRadius: 12
+              borderRadius: 12,
+              marginBottom: 6
             }}
           />
 
-          <div style={{ fontWeight: 600, fontSize: 13 }}>
+          <div
+            style={{
+              fontWeight: 600,
+              fontSize: 13,
+              lineHeight: "1.3"
+            }}
+          >
             {m.title}
           </div>
         </div>

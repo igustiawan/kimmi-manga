@@ -3,8 +3,9 @@ import { sdk } from "@farcaster/miniapp-sdk";
 import { useAccount } from "wagmi";
 
 import AppLayout from "./components/AppLayout";
-import MangaReader from "./components/MangaReader";
 import LibraryPanel from "./components/LibraryPanel";
+import MangaDetail from "./components/MangaDetail";
+import MangaReader from "./components/MangaReader";
 import PassPanel from "./components/PassPanel";
 import RankPanel from "./components/RankPanel";
 import FAQPanel from "./components/FAQPanel";
@@ -12,16 +13,19 @@ import FAQPanel from "./components/FAQPanel";
 type Tab = "read" | "library" | "pass" | "rank" | "faq";
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>("pass");
+  const [tab, setTab] = useState<Tab>("library");
 
   const [fid, setFid] = useState<number | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [pfp, setPfp] = useState<string | null>(null);
 
+  const [selectedManga, setSelectedManga] = useState<string | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
+
   const { address: wallet } = useAccount();
 
   // ============================
-  // FARCASTER SDK (PERFECT FLOW)
+  // FARCASTER SDK
   // ============================
   useEffect(() => {
     (sdk.actions as any).addMiniApp?.();
@@ -39,18 +43,73 @@ export default function App() {
     loadContext();
   }, []);
 
+  // ============================
+  // PRIORITY RENDER (OVERRIDE)
+  // ============================
+
+  // 1️⃣ Reader (chapter)
+  if (selectedChapter) {
+    return (
+      <AppLayout
+        tab={tab}
+        onTabChange={setTab}
+        pfp={pfp}
+        displayName={displayName}
+        wallet={wallet}
+      >
+        <MangaReader
+          chapterEndpoint={selectedChapter}
+          onBack={() => setSelectedChapter(null)}
+        />
+      </AppLayout>
+    );
+  }
+
+  // 2️⃣ Detail (manga)
+  if (selectedManga) {
+    return (
+      <AppLayout
+        tab={tab}
+        onTabChange={setTab}
+        pfp={pfp}
+        displayName={displayName}
+        wallet={wallet}
+      >
+        <MangaDetail
+          endpoint={selectedManga}
+          onRead={(chapter) => setSelectedChapter(chapter)}
+          onBack={() => setSelectedManga(null)}
+        />
+      </AppLayout>
+    );
+  }
+
+  // ============================
+  // NORMAL TAB CONTENT
+  // ============================
   function renderContent() {
     switch (tab) {
-      // case "read":
-      //   return <MangaReader wallet={wallet} />;
       case "library":
-        return <LibraryPanel />;
+        return (
+          <LibraryPanel
+            onSelect={(endpoint) => setSelectedManga(endpoint)}
+          />
+        );
+
       case "pass":
-        return <PassPanel wallet={wallet} onMinted={() => setTab("read")} />;
+        return (
+          <PassPanel
+            wallet={wallet}
+            onMinted={() => setTab("library")}
+          />
+        );
+
       case "rank":
         return <RankPanel wallet={wallet} />;
+
       case "faq":
         return <FAQPanel />;
+
       default:
         return null;
     }
