@@ -46,9 +46,10 @@ export default function LibraryPanel() {
               loading="lazy"
               style={{
                 width: "100%",
-                height: "100%",
+                aspectRatio: "3 / 4",
                 objectFit: "cover",
-                borderRadius: 12
+                borderRadius: 12,
+                background: "#EDE9FE"
               }}
             />
           </div>

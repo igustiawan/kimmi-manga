@@ -18,19 +18,25 @@ export async function fetchMangaList(): Promise<MangaItem[]> {
   const res = await fetch("/api/manga");
   const json = await res.json();
 
-  if (!json?.data) return [];
+  const mangas = json.manga ?? [];
+  const covers = json.covers ?? [];
 
-  return json.data.map((m: any) => {
-    const coverRel = m.relationships.find(
-      (r: any) => r.type === "cover_art"
+  return mangas.map((m: any) => {
+    // ⬇️ INI KODENYA MASUK SINI
+    const cover = covers.find((c: any) =>
+      c.relationships?.some(
+        (r: any) => r.type === "manga" && r.id === m.id
+      )
     );
+
+    const thumbnail = cover
+      ? `https://uploads.mangadex.org/covers/${m.id}/${cover.attributes.fileName}.256.jpg`
+      : "";
 
     return {
       id: m.id,
       title: resolveTitle(m.attributes.title),
-      cover: coverRel
-          ? `https://uploads.mangadex.org/covers/${m.id}/${coverRel.attributes.fileName}.256.jpg`
-          : ""
+      cover: thumbnail
     };
   });
 }
