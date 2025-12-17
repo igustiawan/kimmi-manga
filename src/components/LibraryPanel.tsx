@@ -29,34 +29,36 @@ export default function LibraryPanel() {
       }}
     >
       {manga.map((m) => (
-        <div
-              key={m.id}
-              className="panel"
-              style={{ padding: 8 }}
-            >
-          <img
-            src={m.cover}
-            alt={m.title}
-            loading="lazy"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                "https://via.placeholder.com/300x400?text=Manga";
-            }}
+        <div key={m.id} className="panel" style={{ padding: 8 }}>
+          <div
             style={{
               width: "100%",
               aspectRatio: "3 / 4",
-              objectFit: "cover",
               borderRadius: 12,
-              background: "#EDE9FE" // 👈 ungu pastel
+              background: "#EDE9FE",
+              position: "relative",
+              overflow: "hidden"
             }}
-          />
+          >
+            <img
+              src={m.cover}
+              alt={m.title}
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: 12
+              }}
+            />
+          </div>
 
           <div
             style={{
               fontWeight: 600,
               fontSize: 12,
-              lineHeight: "1.3",
-              marginTop: 6
+              marginTop: 6,
+              lineHeight: "1.3"
             }}
           >
             {m.title}

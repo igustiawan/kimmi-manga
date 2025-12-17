@@ -29,8 +29,8 @@ export async function fetchMangaList(): Promise<MangaItem[]> {
       id: m.id,
       title: resolveTitle(m.attributes.title),
       cover: coverRel
-        ? `https://uploads.mangadex.org/covers/${m.id}/${coverRel.attributes.fileName}.256.jpg`
-        : "https://via.placeholder.com/300x400?text=Manga"
+          ? `https://uploads.mangadex.org/covers/${m.id}/${coverRel.attributes.fileName}.256.jpg`
+          : ""
     };
   });
 }
