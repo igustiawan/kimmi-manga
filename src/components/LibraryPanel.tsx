@@ -16,10 +16,6 @@ export default function LibraryPanel() {
     return <div className="panel">Loading manga…</div>;
   }
 
-  if (!manga.length) {
-    return <div className="panel">No manga available.</div>;
-  }
-
   return (
     <div
       style={{
@@ -29,17 +25,7 @@ export default function LibraryPanel() {
       }}
     >
       {manga.map((m) => (
-        <div key={m.id} className="panel" style={{ padding: 8 }}>
-          <div
-            style={{
-              width: "100%",
-              aspectRatio: "3 / 4",
-              borderRadius: 12,
-              background: "#EDE9FE",
-              position: "relative",
-              overflow: "hidden"
-            }}
-          >
+        <div key={m.id} className="panel">
           <img
             src={m.cover}
             alt={m.title}
@@ -48,20 +34,11 @@ export default function LibraryPanel() {
               width: "100%",
               aspectRatio: "3 / 4",
               objectFit: "cover",
-              borderRadius: 12,
-              background: "#EDE9FE"
+              borderRadius: 12
             }}
           />
-          </div>
 
-          <div
-            style={{
-              fontWeight: 600,
-              fontSize: 12,
-              marginTop: 6,
-              lineHeight: "1.3"
-            }}
-          >
+          <div style={{ fontWeight: 600, fontSize: 13 }}>
             {m.title}
           </div>
         </div>
