@@ -2,7 +2,6 @@
    API PROXY BASE
 ========================= */
 
-// Semua request lewat Vercel API (anti-CORS)
 const API = "/api/komiku";
 
 /* =========================
@@ -10,7 +9,7 @@ const API = "/api/komiku";
 ========================= */
 
 export type MangaItem = {
-  id: string;        // "/manga/xxx/"
+  id: string;        // contoh: "/manga/one-piece/"
   title: string;
   cover: string;
   type: string;
@@ -22,7 +21,7 @@ export type MangaItem = {
 
 export async function fetchMangaList(): Promise<MangaItem[]> {
   const res = await fetch(
-    `${API}?path=comic/list?filter=manga`
+    `${API}?path=${encodeURIComponent("comic/list?filter=manga")}`
   );
 
   const json = await res.json();
@@ -49,7 +48,7 @@ export async function fetchMangaDetail(endpoint: string) {
   const clean = endpoint.replace(/^\/+/, ""); // "manga/solo-leveling/"
 
   const res = await fetch(
-    `${API}?path=comic/info/${clean}`
+    `${API}?path=${encodeURIComponent(`comic/info/${clean}`)}`
   );
 
   const json = await res.json();
@@ -68,18 +67,14 @@ export async function fetchMangaDetail(endpoint: string) {
 
 export async function fetchChapter(endpoint: string) {
   // endpoint contoh: "/ch/xxx-chapter-1/"
-  console.log("FETCH CHAPTER:", endpoint);
-
   const res = await fetch(
-    `${API}?path=comic/chapter${endpoint}`
+    `${API}?path=${encodeURIComponent(`comic/chapter${endpoint}`)}`
   );
 
   const json = await res.json();
 
-  console.log("CHAPTER RESPONSE:", json);
-
   if (!json.success || !json.data?.image) {
-    console.error("No chapter images:", json);
+    console.error("fetchChapter failed:", json);
     return null;
   }
 

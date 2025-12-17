@@ -1,4 +1,3 @@
-// components/MangaDetail.tsx
 import { useEffect, useState } from "react";
 import { fetchMangaDetail } from "../services/mangapi";
 
@@ -8,13 +7,11 @@ type Chapter = {
 };
 
 type MangaDetailData = {
-  thumbnail: string;
+  thumbnail?: string;
   title: string;
   type: string;
-  author: string;
-  status: string;
-  rating: string;
-  genre: string[];
+  status?: string;
+  desc?: string;
   chapter_list: Chapter[];
 };
 
@@ -34,54 +31,76 @@ export default function MangaDetail({
 
   useEffect(() => {
     setLoading(true);
+
     fetchMangaDetail(endpoint)
-      .then(setData)
+      .then((res) => {
+        setData(res);
+      })
       .finally(() => setLoading(false));
   }, [endpoint]);
 
-  if (loading) return <div className="panel">Loading detail…</div>;
-  if (!data) return <div className="panel">Failed to load manga.</div>;
+  if (loading) {
+    return <div className="panel">Loading detail…</div>;
+  }
+
+  if (!data) {
+    return (
+      <div className="panel">
+        <button onClick={onBack}>← Back</button>
+        <div style={{ marginTop: 12 }}>
+          Failed to load manga detail.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="panel">
       <button onClick={onBack}>← Back</button>
 
-      <h3>{data.title}</h3>
+      <h3 style={{ marginTop: 8 }}>{data.title}</h3>
 
-      <img
-        src={data.thumbnail}
-        alt={data.title}
-        style={{ width: "100%", borderRadius: 12 }}
-      />
+      {data.thumbnail && (
+        <img
+          src={data.thumbnail}
+          alt={data.title}
+          style={{
+            width: "100%",
+            borderRadius: 12,
+            marginBottom: 12
+          }}
+        />
+      )}
 
       <div style={{ fontSize: 12, opacity: 0.7 }}>
-        {data.type} • {data.status}
+        {data.type}
+        {data.status ? ` • ${data.status}` : ""}
       </div>
 
-      <div style={{ fontSize: 12 }}>
-        Author: {data.author} <br />
-        Rating: {data.rating}
-      </div>
+      {data.desc && (
+        <div style={{ fontSize: 13, marginTop: 12 }}>
+          {data.desc}
+        </div>
+      )}
 
-      <div style={{ marginTop: 12 }}>
+      <div style={{ marginTop: 16 }}>
         <strong>Chapters</strong>
 
-        {data.chapter_list?.map((ch: any) => (
-        <div
-            key={ch.endpoint}
-            onClick={() => {
-            console.log("OPEN CHAPTER:", ch.endpoint);
-            onRead(ch.endpoint); // ⬅️ HARUS INI
-            }}
-            style={{
-            padding: "10px 8px",
-            borderBottom: "1px solid #eee",
-            cursor: "pointer"
-            }}
-        >
-            {ch.name}
+        <div style={{ marginTop: 8 }}>
+          {data.chapter_list.map((ch) => (
+            <div
+              key={ch.endpoint}
+              onClick={() => onRead(ch.endpoint)}
+              style={{
+                padding: "8px 6px",
+                borderBottom: "1px solid #eee",
+                cursor: "pointer"
+              }}
+            >
+              {ch.name}
+            </div>
+          ))}
         </div>
-        ))}
       </div>
     </div>
   );

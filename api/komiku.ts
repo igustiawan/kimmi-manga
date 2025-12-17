@@ -11,13 +11,19 @@ export default async function handler(
   }
 
   try {
-    const url = `https://komiku-api.fly.dev/api/${path}`;
-    const r = await fetch(url);
-    const data = await r.text(); // ⬅️ text dulu (aman)
+    // DEBUG (boleh hapus nanti)
+    console.log("PROXY PATH:", path);
+
+    const targetUrl = `https://komiku-api.fly.dev/api/${path}`;
+    const r = await fetch(targetUrl);
+
+    const text = await r.text();
 
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(200).send(data);
-  } catch (e) {
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).send(text);
+  } catch (err) {
+    console.error("Proxy error:", err);
     res.status(500).json({ error: "Proxy failed" });
   }
 }

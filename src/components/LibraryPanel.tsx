@@ -11,8 +11,12 @@ export default function LibraryPanel({ onSelect }: Props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+
     fetchMangaList()
-      .then(setManga)
+      .then((list) => {
+        setManga(list);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -21,7 +25,11 @@ export default function LibraryPanel({ onSelect }: Props) {
   }
 
   if (manga.length === 0) {
-    return <div className="panel">No manga found.</div>;
+    return (
+      <div className="panel">
+        No manga available right now.
+      </div>
+    );
   }
 
   return (
@@ -52,7 +60,13 @@ export default function LibraryPanel({ onSelect }: Props) {
             }}
           />
 
-          <div style={{ fontWeight: 600, fontSize: 13 }}>
+          <div
+            style={{
+              fontWeight: 600,
+              fontSize: 13,
+              lineHeight: "1.3"
+            }}
+          >
             {m.title}
           </div>
         </div>
