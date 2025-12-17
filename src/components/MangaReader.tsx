@@ -28,9 +28,7 @@ export default function MangaReader({ chapterEndpoint, onBack }: Props) {
     return (
       <div className="panel">
         <button onClick={onBack}>← Back</button>
-        <div style={{ marginTop: 12 }}>
-          Failed to load chapter images.
-        </div>
+        Failed to load chapter images
       </div>
     );
   }

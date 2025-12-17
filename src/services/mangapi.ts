@@ -54,13 +54,20 @@ export async function fetchMangaDetail(endpoint: string) {
 ========================= */
 
 export async function fetchChapter(endpoint: string) {
-  const clean = endpoint.replace(/^\/+/, "");
-  const res = await fetch(`${BASE_URL}/comic/chapter/${clean}`);
-  const json = await res.json();
+  // ❗ endpoint SUDAH BERBENTUK "/ch/xxx/"
+  const res = await fetch(
+    `https://komiku-api.fly.dev/api/comic/chapter${endpoint}`
+  );
 
-  if (!json.success) {
+  if (!res.ok) {
     throw new Error("Failed to fetch chapter");
   }
 
-  return json.data;
+  const json = await res.json();
+
+  if (!json.success || !json.data?.image) {
+    throw new Error("No chapter images");
+  }
+
+  return json.data; // { title, image[] }
 }
