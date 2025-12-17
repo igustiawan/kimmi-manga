@@ -15,6 +15,14 @@ export default function LibraryPanel() {
     return <div className="panel">Loading manga…</div>;
   }
 
+  if (!manga.length) {
+    return (
+      <div className="panel">
+        No manga available right now.
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
