@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchMangaList, getCoverUrl } from "../services/mangadex";
+import { fetchMangaList } from "../services/mangapi";
+import type { MangaItem } from "../services/mangapi";
+
 
 export default function LibraryPanel() {
-  const [manga, setManga] = useState<any[]>([]);
+  const [manga, setManga] = useState<MangaItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,14 +15,6 @@ export default function LibraryPanel() {
 
   if (loading) {
     return <div className="panel">Loading manga…</div>;
-  }
-
-  if (!manga.length) {
-    return (
-      <div className="panel">
-        No manga available right now.
-      </div>
-    );
   }
 
   return (
@@ -34,10 +28,13 @@ export default function LibraryPanel() {
       {manga.map((m) => (
         <div key={m.id} className="panel">
           <img
-            src={getCoverUrl(m.id, m.coverId)}
+            src={m.cover}
+            alt={m.title}
             style={{
               width: "100%",
-              borderRadius: 10,
+              aspectRatio: "3 / 4",
+              objectFit: "cover",
+              borderRadius: 12,
               marginBottom: 8
             }}
           />
