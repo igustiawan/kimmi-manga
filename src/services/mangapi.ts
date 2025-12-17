@@ -6,7 +6,14 @@ export type MangaItem = {
 };
 
 export async function fetchMangaList(): Promise<MangaItem[]> {
-  const res = await fetch("/api/manga");
+  const res = await fetch(
+    "https://mangahook-api.vercel.app/mangalist"
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch MangaHook list");
+  }
+
   const list = await res.json();
 
   return list.map((m: any) => ({
