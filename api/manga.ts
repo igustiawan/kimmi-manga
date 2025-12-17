@@ -1,14 +1,14 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const BASE = "https://mangapi.herokuapp.com"; 
-// base MangAPI
-
 export default async function handler(
-  req: VercelRequest,
+  _req: VercelRequest,
   res: VercelResponse
 ) {
   try {
-    const r = await fetch(`${BASE}/api/v1/mangas`);
+    // NOTE:
+    // MangAPI public sering tidak konsisten.
+    // Kita forward apa adanya dan handle di client.
+    const r = await fetch("https://mangapi.herokuapp.com/api/v1/mangas");
     const json = await r.json();
 
     res.status(200).json(json);

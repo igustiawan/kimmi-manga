@@ -1,29 +1,27 @@
-export interface MangaItem {
+// TYPE HARUS DI-EXPORT
+export type MangaItem = {
   id: string;
   title: string;
   cover: string;
-}
+};
 
 export async function fetchMangaList(): Promise<MangaItem[]> {
   const res = await fetch("/api/manga");
   const json = await res.json();
 
   /**
-   * Struktur MangAPI:
-   * {
-   *   data: [
-   *     {
-   *       _id,
-   *       title,
-   *       image
-   *     }
-   *   ]
-   * }
+   * Kita HANDLE SEMUA KEMUNGKINAN STRUKTUR
+   * karena MangAPI gak konsisten
    */
+  const list = json?.data || json?.mangas || [];
 
-  return json.data.map((m: any) => ({
-    id: m._id,
-    title: m.title,
-    cover: m.image
+  return list.map((m: any) => ({
+    id: m._id || m.id || crypto.randomUUID(),
+    title: m.title || m.name || "Untitled",
+    cover:
+      m.image ||
+      m.cover ||
+      m.thumbnail ||
+      "https://via.placeholder.com/300x400?text=Manga"
   }));
 }

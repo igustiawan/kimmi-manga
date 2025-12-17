@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { fetchMangaList } from "../services/mangapi";
 import type { MangaItem } from "../services/mangapi";
 
-
 export default function LibraryPanel() {
   const [manga, setManga] = useState<MangaItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +14,10 @@ export default function LibraryPanel() {
 
   if (loading) {
     return <div className="panel">Loading manga…</div>;
+  }
+
+  if (!manga.length) {
+    return <div className="panel">No manga available.</div>;
   }
 
   return (
