@@ -56,14 +56,19 @@ export async function fetchMangaDetail(endpoint: string) {
 ========================= */
 
 export async function fetchChapter(endpoint: string) {
-  // endpoint: "/ch/xxx/"
-  const res = await fetch(`${API}/comic/chapter${endpoint}`);
+  console.log("FETCH CHAPTER:", endpoint);
+
+  const res = await fetch(
+    `https://komiku-api.fly.dev/api/comic/chapter${endpoint}`
+  );
+
   const json = await res.json();
 
+  console.log("CHAPTER RESPONSE:", json);
+
   if (!json.success || !json.data?.image) {
-    console.error("fetchChapter failed:", json);
-    return null;
+    throw new Error("No chapter images");
   }
 
-  return json.data; // { title, image[] }
+  return json.data;
 }

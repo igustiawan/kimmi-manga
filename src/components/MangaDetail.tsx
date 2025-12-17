@@ -66,14 +66,21 @@ export default function MangaDetail({
       <div style={{ marginTop: 12 }}>
         <strong>Chapters</strong>
 
-        {data.chapter_list.map((ch) => (
-          <div
+        {data.chapter_list?.map((ch: any) => (
+        <div
             key={ch.endpoint}
-            onClick={() => onRead(ch.endpoint)}
-            style={{ cursor: "pointer", padding: "6px 0" }}
-          >
+            onClick={() => {
+            console.log("OPEN CHAPTER:", ch.endpoint);
+            onRead(ch.endpoint); // ⬅️ HARUS INI
+            }}
+            style={{
+            padding: "10px 8px",
+            borderBottom: "1px solid #eee",
+            cursor: "pointer"
+            }}
+        >
             {ch.name}
-          </div>
+        </div>
         ))}
       </div>
     </div>
