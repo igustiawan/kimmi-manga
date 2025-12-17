@@ -4,8 +4,8 @@
     "slug": "kimmi-manga",
     "version": "1",
 
-    "iconUrl": "https://xkimmi.fun/icon.png",
-    "homeUrl": "https://xkimmi.fun",
+    "iconUrl": "https://xkimmi.site/icon.png",
+    "homeUrl": "https://xkimmi.site",
 
     "tags": ["manga", "comics", "anime", "reading"],
     "primaryCategory": "entertainment",
@@ -16,16 +16,16 @@
 
     "buttonTitle": "Open Kimmi Manga",
 
-    "splashImageUrl": "https://xkimmi.fun/splash.png",
+    "splashImageUrl": "https://xkimmi.site/splash.png",
     "splashBackgroundColor": "#FF9A5A",
 
     "openGraph": {
       "title": "Kimmi Manga — Read Manga Onchain",
       "description": "Mint a Reader Pass NFT and read manga with onchain progress. Simple, cute, and reader-first.",
-      "image": "https://xkimmi.fun/share/og.png"
+      "image": "https://xkimmi.site/share/og.png"
     },
 
-    "webhookUrl": "https://xkimmi.fun/api/farcaster/manga-webhook"
+    "webhookUrl": "https://xkimmi.site/api/farcaster/manga-webhook"
   },
 
   "accountAssociation": {
