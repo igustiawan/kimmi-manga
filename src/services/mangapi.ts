@@ -1,11 +1,16 @@
-const API = "https://komiku-api.fly.dev/api";
+/* =========================
+   API PROXY BASE
+========================= */
+
+// Semua request lewat Vercel API (anti-CORS)
+const API = "/api/komiku";
 
 /* =========================
    TYPES
 ========================= */
 
 export type MangaItem = {
-  id: string;       // "/manga/xxx/"
+  id: string;        // "/manga/xxx/"
   title: string;
   cover: string;
   type: string;
@@ -16,7 +21,10 @@ export type MangaItem = {
 ========================= */
 
 export async function fetchMangaList(): Promise<MangaItem[]> {
-  const res = await fetch(`${API}/comic/list?filter=manga`);
+  const res = await fetch(
+    `${API}?path=comic/list?filter=manga`
+  );
+
   const json = await res.json();
 
   if (!json.success || !Array.isArray(json.data)) {
@@ -37,10 +45,13 @@ export async function fetchMangaList(): Promise<MangaItem[]> {
 ========================= */
 
 export async function fetchMangaDetail(endpoint: string) {
-  // endpoint: "/manga/xxx/"
-  const clean = endpoint.replace(/^\/+/, ""); // "manga/xxx/"
+  // endpoint contoh: "/manga/solo-leveling/"
+  const clean = endpoint.replace(/^\/+/, ""); // "manga/solo-leveling/"
 
-  const res = await fetch(`${API}/comic/info/${clean}`);
+  const res = await fetch(
+    `${API}?path=comic/info/${clean}`
+  );
+
   const json = await res.json();
 
   if (!json.success || !json.data) {
@@ -56,10 +67,11 @@ export async function fetchMangaDetail(endpoint: string) {
 ========================= */
 
 export async function fetchChapter(endpoint: string) {
+  // endpoint contoh: "/ch/xxx-chapter-1/"
   console.log("FETCH CHAPTER:", endpoint);
 
   const res = await fetch(
-    `https://komiku-api.fly.dev/api/comic/chapter${endpoint}`
+    `${API}?path=comic/chapter${endpoint}`
   );
 
   const json = await res.json();
@@ -67,8 +79,9 @@ export async function fetchChapter(endpoint: string) {
   console.log("CHAPTER RESPONSE:", json);
 
   if (!json.success || !json.data?.image) {
-    throw new Error("No chapter images");
+    console.error("No chapter images:", json);
+    return null;
   }
 
-  return json.data;
+  return json.data; // { title, image[] }
 }
