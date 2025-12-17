@@ -6,7 +6,7 @@ export default async function handler(
 ) {
   try {
     const r = await fetch(
-      "https://api.mangadex.org/manga?limit=20&includes[]=cover_art&order[followedCount]=desc"
+    "https://api.mangadex.org/manga?limit=20&includes[]=cover_art&order[followedCount]=desc"
     );
 
     const json = await r.json();
