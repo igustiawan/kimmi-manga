@@ -1,66 +1,66 @@
-// src/services/mangapi.ts
+// services/mangapi.ts
+
+const BASE_URL = "https://komiku-api.fly.dev/api";
+
+/* =========================
+   TYPES
+========================= */
 
 export type MangaItem = {
-  id: string;        // endpoint
+  id: string;          // endpoint manga
   title: string;
   cover: string;
-  desc: string;
+  type: string;
 };
 
-/**
- * LIST MANGA
- * sesuai README:
- * GET /api/comic/list?filter=manga
- */
-export async function fetchMangaList(): Promise<MangaItem[]> {
-  const res = await fetch(
-    "https://komiku-api.fly.dev/api/comic/list?filter=manga"
-  );
+/* =========================
+   FETCH MANGA LIST
+========================= */
 
-  if (!res.ok) {
+export async function fetchMangaList(): Promise<MangaItem[]> {
+  const res = await fetch(`${BASE_URL}/comic/list?filter=manga`);
+  const json = await res.json();
+
+  if (!json.success) {
     throw new Error("Failed to fetch manga list");
   }
 
-  const json = await res.json();
-
-  return json.data.map((m: any) => ({
-    id: m.endpoint,        // contoh: "/manga/solo-leveling/"
-    title: m.title,
-    cover: m.image,        // ✅ thumbnail LANGSUNG ADA
-    desc: m.desc
+  return json.data.map((item: any) => ({
+    id: item.endpoint,          // ⬅️ PENTING
+    title: item.title,
+    cover: item.image,
+    type: item.type
   }));
 }
 
-/**
- * DETAIL MANGA
- * GET /api/comic/info/{endpoint}
- */
-export async function fetchMangaDetail(endpoint: string) {
-  const res = await fetch(
-    `https://komiku-api.fly.dev/api/comic/info${endpoint}`
-  );
+/* =========================
+   FETCH MANGA DETAIL
+========================= */
 
-  if (!res.ok) {
+export async function fetchMangaDetail(endpoint: string) {
+  const clean = endpoint.replace(/^\/+/, "");
+  const res = await fetch(`${BASE_URL}/comic/info/${clean}`);
+  const json = await res.json();
+
+  if (!json.success) {
     throw new Error("Failed to fetch manga detail");
   }
 
-  const json = await res.json();
   return json.data;
 }
 
-/**
- * CHAPTER IMAGES
- * GET /api/comic/chapter/{endpoint}
- */
-export async function fetchChapterImages(chapterEndpoint: string) {
-  const res = await fetch(
-    `https://komiku-api.fly.dev/api/comic/chapter${chapterEndpoint}`
-  );
+/* =========================
+   FETCH CHAPTER
+========================= */
 
-  if (!res.ok) {
+export async function fetchChapter(endpoint: string) {
+  const clean = endpoint.replace(/^\/+/, "");
+  const res = await fetch(`${BASE_URL}/comic/chapter/${clean}`);
+  const json = await res.json();
+
+  if (!json.success) {
     throw new Error("Failed to fetch chapter");
   }
 
-  const json = await res.json();
-  return json.data.image as string[];
+  return json.data;
 }

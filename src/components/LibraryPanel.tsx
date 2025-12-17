@@ -20,6 +20,10 @@ export default function LibraryPanel({ onSelect }: Props) {
     return <div className="panel">Loading manga…</div>;
   }
 
+  if (manga.length === 0) {
+    return <div className="panel">No manga found.</div>;
+  }
+
   return (
     <div
       style={{
@@ -48,13 +52,7 @@ export default function LibraryPanel({ onSelect }: Props) {
             }}
           />
 
-          <div
-            style={{
-              fontWeight: 600,
-              fontSize: 13,
-              lineHeight: "1.3"
-            }}
-          >
+          <div style={{ fontWeight: 600, fontSize: 13 }}>
             {m.title}
           </div>
         </div>
