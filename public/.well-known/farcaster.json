@@ -25,12 +25,12 @@
       "image": "https://xkimmi.site/share/og.png"
     },
 
-    "webhookUrl": "https://xkimmi.site/api/farcaster/manga-webhook"
+    "webhookUrl": "https://xkimmi.site/api/farcaster/webhook"
   },
 
   "accountAssociation": {
     "header": "eyJmaWQiOjI5OTkyOSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDllNWRhZWU0MzE2YWVGRjIwNWJDMzFjRTA5MzBFM2Q2OEJhZEM3ZkEifQ",
-    "payload": "eyJkb21haW4iOiJ4a2ltbWkuZnVuIn0",
-    "signature": "hcr5oRHFldXIxt5wgEZhkfqPhY08khXUH1kmzIupP5dOLizwk3R7Yg7+efQaAPMM50Opsy1/zMnO5gjbAxj8rBw="
+    "payload": "eyJkb21haW4iOiJ4a2ltbWkuc2l0ZSJ9",
+    "signature": "TJPPDui0bseQjH/tTWxTI8ROFJnsKelTT1AJBx/HsBVH7srkM/TYwjrkHErZL1LDLTpDZCtQmMuHy87QhhDgNBw="
   }
 }
