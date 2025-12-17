@@ -1,69 +1,66 @@
-const API = "https://komiku-api.fly.dev/api";
+// services/mangapi.ts
+
+const BASE_URL = "https://komiku-api.fly.dev/api";
 
 /* =========================
    TYPES
 ========================= */
 
 export type MangaItem = {
-  id: string;       // "/manga/xxx/"
+  id: string;          // endpoint manga
   title: string;
   cover: string;
   type: string;
 };
 
 /* =========================
-   LIST MANGA
+   FETCH MANGA LIST
 ========================= */
 
 export async function fetchMangaList(): Promise<MangaItem[]> {
-  const res = await fetch(`${API}/comic/list?filter=manga`);
+  const res = await fetch(`${BASE_URL}/comic/list?filter=manga`);
   const json = await res.json();
 
-  if (!json.success || !Array.isArray(json.data)) {
-    console.error("fetchMangaList failed:", json);
-    return [];
+  if (!json.success) {
+    throw new Error("Failed to fetch manga list");
   }
 
-  return json.data.map((m: any) => ({
-    id: m.endpoint,
-    title: m.title,
-    cover: m.image,
-    type: m.type
+  return json.data.map((item: any) => ({
+    id: item.endpoint,          // ⬅️ PENTING
+    title: item.title,
+    cover: item.image,
+    type: item.type
   }));
 }
 
 /* =========================
-   MANGA DETAIL
+   FETCH MANGA DETAIL
 ========================= */
 
 export async function fetchMangaDetail(endpoint: string) {
-  // endpoint: "/manga/xxx/"
-  const clean = endpoint.replace(/^\/+/, ""); // "manga/xxx/"
-
-  const res = await fetch(`${API}/comic/info/${clean}`);
+  const clean = endpoint.replace(/^\/+/, "");
+  const res = await fetch(`${BASE_URL}/comic/info/${clean}`);
   const json = await res.json();
 
-  if (!json.success || !json.data) {
-    console.error("fetchMangaDetail failed:", json);
-    return null;
+  if (!json.success) {
+    throw new Error("Failed to fetch manga detail");
   }
 
   return json.data;
 }
 
 /* =========================
-   CHAPTER DETAIL
+   FETCH CHAPTER
 ========================= */
 
 export async function fetchChapter(endpoint: string) {
-  // endpoint: "/ch/xxx/"
-  const res = await fetch(`${API}/comic/chapter${endpoint}`);
+  const clean = endpoint.replace(/^\/+/, "");
+  const res = await fetch(`${BASE_URL}/comic/chapter/${clean}`);
   const json = await res.json();
 
-  if (!json.success || !json.data?.image) {
-    console.error("fetchChapter failed:", json);
-    return null;
+  if (!json.success) {
+    throw new Error("Failed to fetch chapter");
   }
 
-  return json.data; // { title, image[] }
+  return json.data;
 }
