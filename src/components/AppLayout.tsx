@@ -23,20 +23,17 @@ export default function AppLayout({
     <div className="app-root">
       {/* ================= HEADER ================= */}
       <header className="app-header">
-        <div className="header-left">
-          {pfp ? (
-            <img src={pfp} className="avatar" />
-          ) : (
-            <div className="avatar placeholder" />
-          )}
-          <div className="user-meta">
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <img
+            src={pfp ?? "/avatar.png"}
+            className="avatar"
+          />
+          <div>
             <div className="username">
-              {displayName || "Anonymous Wibu"}
+              {displayName || "Guest"}
             </div>
             <div className="wallet">
-              {wallet
-                ? wallet.slice(0, 6) + "…" + wallet.slice(-4)
-                : "Not connected"}
+              {wallet ? wallet.slice(0, 6) + "…" : "Not connected"}
             </div>
           </div>
         </div>

@@ -3,40 +3,52 @@ interface Props {
   onMinted?: () => void;
 }
 
+import ConnectWalletButton from "./ConnectWalletButton";
+
 export default function PassPanel({ wallet, onMinted }: Props) {
-  const hasPass = false; // 🔧 nanti dari contract
+  const hasPass = false; // nanti diganti hasil contract
+
+  if (!wallet) {
+    return (
+      <div className="card">
+        <div style={{ fontSize: 18, marginBottom: 10 }}>
+          🎟 Reader Pass Required
+        </div>
+
+        <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 14 }}>
+          Connect your wallet to mint a Reader Pass.
+        </div>
+
+        <ConnectWalletButton />
+      </div>
+    );
+  }
 
   if (!hasPass) {
     return (
-      <div className="card">
-        <div style={{ fontSize: 20, marginBottom: 6 }}>🎟 Reader Pass</div>
-        <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 14 }}>
-          Mint a Reader Pass NFT to access Kimmi Manga.
+      <div className="panel">
+        <div style={{ fontWeight: 600, marginBottom: 4 }}>
+          Reader Pass
         </div>
 
-        <button
-          className="button-primary"
-          disabled={!wallet}
-          onClick={() => onMinted?.()}
+        <div
+          style={{
+            fontSize: 13,
+            color: "#8B8B9A",
+            marginBottom: 14
+          }}
         >
-          Mint Reader Pass
-        </button>
+          Required to read manga chapters
+        </div>
 
-        {!wallet && (
-          <div style={{ fontSize: 12, opacity: 0.6, marginTop: 8 }}>
-            Connect wallet to mint
-          </div>
-        )}
+        <ConnectWalletButton />
       </div>
     );
   }
 
   return (
     <div className="card">
-      <div style={{ fontSize: 20 }}>🎟 Your Reader Pass</div>
-      <div style={{ fontSize: 13, opacity: 0.75 }}>
-        Chapters read: 12
-      </div>
+      You have a Reader Pass 🎉
     </div>
   );
 }

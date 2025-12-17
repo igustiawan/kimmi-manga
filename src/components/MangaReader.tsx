@@ -4,34 +4,25 @@ interface Props {
 
 export default function MangaReader({ wallet }: Props) {
   return (
-    <div className="card">
-      <div style={{ marginBottom: 10 }}>
-        <div style={{ fontWeight: 600 }}>📖 One Piece</div>
-        <div style={{ fontSize: 12, opacity: 0.7 }}>
-          Chapter 12 · Progress 72%
-        </div>
+    <div className="panel">
+      <div style={{ fontSize: 13, color: "#8B8B9A", marginBottom: 6 }}>
+        Chapter 1
       </div>
 
-      {/* Fake manga panels */}
       <div
         style={{
           height: 420,
-          borderRadius: 12,
-          background:
-            "repeating-linear-gradient(180deg,#eee,#eee 120px,#f7f7f7 120px,#f7f7f7 240px)",
-          marginBottom: 14
+          background: "#F8F5FF",
+          borderRadius: 12
         }}
       />
 
-      <button className="button-primary">
-        🔓 Unlock Next Chapter (fee)
+      <button
+        className="button-primary"
+        style={{ marginTop: 14 }}
+      >
+        Unlock next chapter
       </button>
-
-      {!wallet && (
-        <div style={{ fontSize: 12, opacity: 0.6, marginTop: 8 }}>
-          Connect wallet to continue reading
-        </div>
-      )}
     </div>
   );
 }
