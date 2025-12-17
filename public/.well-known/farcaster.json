@@ -1,0 +1,36 @@
+{
+  "frame": {
+    "name": "Kimmi Manga",
+    "slug": "kimmi-manga",
+    "version": "1",
+
+    "iconUrl": "https://xkimmi.fun/icon.png",
+    "homeUrl": "https://xkimmi.fun",
+
+    "tags": ["manga", "comics", "anime", "reading"],
+    "primaryCategory": "entertainment",
+
+    "tagline": "Read manga with onchain progress",
+    "subtitle": "Mint a Reader Pass and start reading manga",
+    "description": "Kimmi Manga is a manga reading mini app. Mint a Reader Pass NFT to unlock access, track your reading progress onchain, and explore manga chapters with micro unlocks.",
+
+    "buttonTitle": "Open Kimmi Manga",
+
+    "splashImageUrl": "https://xkimmi.fun/splash.png",
+    "splashBackgroundColor": "#FF9A5A",
+
+    "openGraph": {
+      "title": "Kimmi Manga — Read Manga Onchain",
+      "description": "Mint a Reader Pass NFT and read manga with onchain progress. Simple, cute, and reader-first.",
+      "image": "https://xkimmi.fun/share/og.png"
+    },
+
+    "webhookUrl": "https://xkimmi.fun/api/farcaster/manga-webhook"
+  },
+
+  "accountAssociation": {
+    "header": "eyJmaWQiOjI5OTkyOSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDllNWRhZWU0MzE2YWVGRjIwNWJDMzFjRTA5MzBFM2Q2OEJhZEM3ZkEifQ",
+    "payload": "eyJkb21haW4iOiJ4a2ltbWkuZnVuIn0",
+    "signature": "hcr5oRHFldXIxt5wgEZhkfqPhY08khXUH1kmzIupP5dOLizwk3R7Yg7+efQaAPMM50Opsy1/zMnO5gjbAxj8rBw="
+  }
+}

@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { sdk } from "@farcaster/miniapp-sdk";
+import { useAccount } from "wagmi";
 
-function App() {
-  const [count, setCount] = useState(0)
+import AppLayout from "./components/AppLayout";
+import MangaReader from "./components/MangaReader";
+import LibraryPanel from "./components/LibraryPanel";
+import PassPanel from "./components/PassPanel";
+import RankPanel from "./components/RankPanel";
+import FAQPanel from "./components/FAQPanel";
+
+type Tab = "read" | "library" | "pass" | "rank" | "faq";
+
+export default function App() {
+  const [tab, setTab] = useState<Tab>("pass");
+
+  const [fid, setFid] = useState<number | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
+  const [pfp, setPfp] = useState<string | null>(null);
+
+  const { address: wallet } = useAccount();
+
+  // ============================
+  // FARCASTER SDK (PERFECT FLOW)
+  // ============================
+  useEffect(() => {
+    (sdk.actions as any).addMiniApp?.();
+    sdk.actions.ready();
+
+    async function loadContext() {
+      const ctx = await sdk.context;
+      if (ctx?.user) {
+        setFid(ctx.user.fid);
+        setDisplayName(ctx.user.displayName || null);
+        setPfp(ctx.user.pfpUrl || null);
+      }
+    }
+
+    loadContext();
+  }, []);
+
+  function renderContent() {
+    switch (tab) {
+      case "read":
+        return <MangaReader wallet={wallet} />;
+      case "library":
+        return <LibraryPanel />;
+      case "pass":
+        return <PassPanel wallet={wallet} onMinted={() => setTab("read")} />;
+      case "rank":
+        return <RankPanel wallet={wallet} />;
+      case "faq":
+        return <FAQPanel />;
+      default:
+        return null;
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AppLayout
+      tab={tab}
+      onTabChange={setTab}
+      pfp={pfp}
+      displayName={displayName}
+      wallet={wallet}
+    >
+      {renderContent()}
+    </AppLayout>
+  );
 }
-
-export default App
