@@ -40,18 +40,18 @@ export default function LibraryPanel() {
               overflow: "hidden"
             }}
           >
-            <img
-              src={m.cover}
-              alt={m.title}
-              loading="lazy"
-              style={{
-                width: "100%",
-                aspectRatio: "3 / 4",
-                objectFit: "cover",
-                borderRadius: 12,
-                background: "#EDE9FE"
-              }}
-            />
+          <img
+            src={m.cover}
+            alt={m.title}
+            loading="lazy"
+            style={{
+              width: "100%",
+              aspectRatio: "3 / 4",
+              objectFit: "cover",
+              borderRadius: 12,
+              background: "#EDE9FE"
+            }}
+          />
           </div>
 
           <div
