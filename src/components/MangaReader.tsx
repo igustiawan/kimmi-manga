@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchChapterImages } from "../services/mangapi";
+import { fetchChapter } from "../services/mangapi";
 
 type Props = {
   chapterEndpoint: string;
@@ -12,13 +12,27 @@ export default function MangaReader({ chapterEndpoint, onBack }: Props) {
 
   useEffect(() => {
     setLoading(true);
-    fetchChapterImages(chapterEndpoint)
-      .then(setImages)
+
+    fetchChapter(chapterEndpoint)
+      .then((data) => {
+        setImages(data.image || []);
+      })
       .finally(() => setLoading(false));
   }, [chapterEndpoint]);
 
   if (loading) {
     return <div className="panel">Loading chapter…</div>;
+  }
+
+  if (images.length === 0) {
+    return (
+      <div className="panel">
+        <button onClick={onBack}>← Back</button>
+        <div style={{ marginTop: 12 }}>
+          Failed to load chapter images.
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -42,6 +56,7 @@ export default function MangaReader({ chapterEndpoint, onBack }: Props) {
         <img
           key={i}
           src={src}
+          alt={`Page ${i + 1}`}
           style={{
             width: "100%",
             display: "block"
