@@ -41,8 +41,8 @@ export default function App() {
 
   function renderContent() {
     switch (tab) {
-      case "read":
-        return <MangaReader wallet={wallet} />;
+      // case "read":
+      //   return <MangaReader wallet={wallet} />;
       case "library":
         return <LibraryPanel />;
       case "pass":

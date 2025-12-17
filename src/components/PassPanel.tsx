@@ -27,21 +27,20 @@ export default function PassPanel({ wallet, onMinted }: Props) {
   if (!hasPass) {
     return (
       <div className="panel">
-        <div style={{ fontWeight: 600, marginBottom: 4 }}>
-          Reader Pass
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 18 }}>🎟️</span>
+          <div style={{ fontWeight: 600 }}>Reader Pass</div>
         </div>
 
         <div
           style={{
             fontSize: 13,
             color: "#8B8B9A",
-            marginBottom: 14
+            marginTop: 4
           }}
         >
           Required to read manga chapters
         </div>
-
-        <ConnectWalletButton />
       </div>
     );
   }
